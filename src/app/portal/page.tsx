@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Star, Clock, History, Loader2 } from "lucide-react";
+import { Star, Clock, History, Loader2, User } from "lucide-react";
 import Link from "next/link";
 
 interface Summary {
@@ -76,33 +76,46 @@ export default function PortalHomePage() {
       </div>
 
       {/* Expiring points */}
-      {summary.expiring_3m_points > 0 && (
-        <div className="rounded-2xl border bg-amber-50 p-5 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Clock className="h-6 w-6 text-amber-600" />
-            <div>
-              <p className="text-sm text-amber-700">แต้มใกล้หมดอายุ (3 เดือน)</p>
-              <p className="text-xl font-bold text-amber-700">
-                {summary.expiring_3m_points.toLocaleString()} แต้ม
-              </p>
-            </div>
+      <Link
+        href="/portal/expiring"
+        className={`block rounded-2xl border p-5 shadow-sm ${
+          summary.expiring_3m_points > 0 ? "border-amber-200 bg-amber-50" : "bg-white"
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <Clock className={`h-6 w-6 ${summary.expiring_3m_points > 0 ? "text-amber-600" : "text-gray-400"}`} />
+          <div>
+            <p className={`text-sm ${summary.expiring_3m_points > 0 ? "text-amber-700" : "text-gray-500"}`}>
+              แต้มใกล้หมดอายุ (3 เดือน)
+            </p>
+            <p className={`text-xl font-bold ${summary.expiring_3m_points > 0 ? "text-amber-700" : "text-gray-400"}`}>
+              {summary.expiring_3m_points.toLocaleString()} แต้ม
+            </p>
           </div>
         </div>
-      )}
+      </Link>
 
       {/* Quick links */}
-      <Link
-        href="/portal/history"
-        className="flex items-center gap-3 rounded-2xl border bg-white p-4 shadow-sm hover:bg-gray-50"
-      >
-        <div className="rounded-xl bg-blue-50 p-2.5">
-          <History className="h-5 w-5 text-blue-600" />
-        </div>
-        <div>
-          <p className="font-medium text-gray-900">ดูประวัติแต้ม</p>
-          <p className="text-xs text-gray-500">ตรวจสอบรายการรับ/ใช้แต้มทั้งหมด</p>
-        </div>
-      </Link>
+      <div className="grid grid-cols-2 gap-3">
+        <Link
+          href="/portal/history"
+          className="flex flex-col items-center gap-2 rounded-2xl border bg-white p-4 shadow-sm hover:bg-gray-50"
+        >
+          <div className="rounded-xl bg-blue-50 p-2.5">
+            <History className="h-5 w-5 text-blue-600" />
+          </div>
+          <p className="text-center text-sm font-medium text-gray-900">ประวัติแต้ม</p>
+        </Link>
+        <Link
+          href="/portal/profile"
+          className="flex flex-col items-center gap-2 rounded-2xl border bg-white p-4 shadow-sm hover:bg-gray-50"
+        >
+          <div className="rounded-xl bg-purple-50 p-2.5">
+            <User className="h-5 w-5 text-purple-600" />
+          </div>
+          <p className="text-center text-sm font-medium text-gray-900">ข้อมูลของฉัน</p>
+        </Link>
+      </div>
     </div>
   );
 }
